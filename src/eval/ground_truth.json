@@ -1,0 +1,262 @@
+{
+  "_instrucciones": "Conjunto de evaluación tipo ground truth. Como el corpus tiene 15 productos SIKA distintos, cada pregunta está ANCLADA a un producto concreto para que tenga una única respuesta correcta. Cubre las 16 secciones y tres tipos (factual, técnica, trazabilidad). El campo 'reference_answer' se generó como BORRADOR con el propio RAG (verified=false) para acelerar la revisión: VERIFÍCALO contra el PDF original (o NotebookLM) y corrígelo, luego pon verified=true. 'expected_section' permite medir el hit-rate de recuperación de forma independiente. 'draft_sources' lista las fuentes que el RAG recuperó al generar el borrador.",
+  "preguntas": [
+    {
+      "id": "q01",
+      "question": "¿Quién es el fabricante/distribuidor del Esmalte Uretano AR Comp. B y cuál es el teléfono de emergencia?",
+      "type": "factual",
+      "product": "Esmalte Uretano AR Comp. B",
+      "expected_section": 1,
+      "reference_answer": ", Fabricante/distribuidor: Sika Colombia S.A.S., Teléfono de emergencia: CISPROQUIM Bogotá: 2886012 / 2886355, Resto del país: 01 8000 916012.",
+      "verified": false,
+      "draft_sources": [
+        "Esmalte Uretano AR Comp. B, Sección 1, p.1",
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 1, p.1",
+        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 1, p.1",
+        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 1, p.1",
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 1, p.1"
+      ]
+    },
+    {
+      "id": "q02",
+      "question": "¿Cuál es el uso recomendado del producto Sikafloor-2430 Part A?",
+      "type": "factual",
+      "product": "Sikafloor-2430 Part A",
+      "expected_section": 1,
+      "reference_answer": "El uso recomendado del producto Sikafloor-2430 Part A es como revestimiento de epoxi.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 1, p.1",
+        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 1, p.1",
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 1, p.1",
+        "FDS 73 - Sikafloor®-161 Part A Level Comercial - SIKA, Sección 1, p.1",
+        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 1, p.1"
+      ]
+    },
+    {
+      "id": "q03",
+      "question": "¿Qué indicaciones de peligro (frases H) tiene el Esmalte Alquídico Serie 31?",
+      "type": "tecnica",
+      "product": "Esmalte Alquídico Serie 31",
+      "expected_section": 2,
+      "reference_answer": "No se encuentra en los documentos.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 2, p.1",
+        "Esmalte Uretano AR Comp. B, Sección 2, p.1",
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 2, p.1",
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 2, p.1",
+        "FDS 20 - Esmalte Alquídico Serie 31, Sección 2, p.1"
+      ]
+    },
+    {
+      "id": "q04",
+      "question": "¿Qué palabra de advertencia aplica al Sikafloor-161/264 Part B y qué peligros principales declara?",
+      "type": "tecnica",
+      "product": "Sikafloor-161/264 Part B",
+      "expected_section": 2,
+      "reference_answer": "Para Sikafloor-161/264 (Part B), la palabra de advertencia es \"Peligro\" y los peligros principales declarados son: , Sección 2, p.2]",
+      "verified": false,
+      "draft_sources": [
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 2, p.1",
+        "FDS 73 - Sikafloor®-161 Part A Level Comercial - SIKA, Sección 2, p.1",
+        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 2, p.1",
+        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 2, p.1",
+        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 2, p.1"
+      ]
+    },
+    {
+      "id": "q05",
+      "question": "¿Qué componentes peligrosos y en qué rango de concentración contiene el Esmalte Alquídico Serie 31?",
+      "type": "tecnica",
+      "product": "Esmalte Alquídico Serie 31",
+      "expected_section": 3,
+      "reference_answer": "No se encuentra en los documentos.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 3, p.2",
+        "Esmalte Uretano AR Comp. B, Sección 3, p.2",
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 3, p.2",
+        "FDS 27 - Epoxi_100HS_S300_CA, Sección 3, p.2",
+        "FDS 20 - Esmalte Alquídico Serie 31, Sección 3, p.3"
+      ]
+    },
+    {
+      "id": "q06",
+      "question": "¿Cuáles son los componentes del Esmalte Uretano AR Comp. B y sus números CAS?",
+      "type": "tecnica",
+      "product": "Esmalte Uretano AR Comp. B",
+      "expected_section": 3,
+      "reference_answer": "El componente del Esmalte Uretano AR Comp. B es un acetato de butilo con el CAS No. 123-86-4, y un sebacato de metilo y 1,2,2,6,6-pentametil-4-piperidilo con el CAS No. 82919-37-7. El componente del Esmalte Uretano AR Comp. B es un homopolimero hexametileno-1,6-diisocianato con el CAS No. 28182-81-2 y un 1,6-diisocianato de hexametileno con el CAS No. 822-06-0. El componente del Esmalte Uretano AR Comp. B es un homopolimero hexametileno-1,6-diisocianato con el CAS No. 28182-81-2 y un 1,6-diisocianato de hexametileno con el CAS No. 822-06-0. Los componentes del Esmalte Uretano Part A son un acetato de n-butilo con el CAS No. 123-86-4, una nafta disolvente (petróleo), fracción aromática ligera con el CAS No. 64742-95-6, un sebacato de bis(1,2,2,6,6-pentametil-4-piperidilo) con el CAS No. 41556-26-7 y varios otros compuestos químicos como xileno, acetato de propilo, etilbenceno, sebacato de metilo y 1,2,2,6,6-pentametil-4-piperidilo, metacrilato de metilo, entre otros.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 3, p.2",
+        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 3, p.3",
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 3, p.2",
+        "Esmalte Uretano AR Comp. B, Sección 3, p.2",
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 3, p.3"
+      ]
+    },
+    {
+      "id": "q07",
+      "question": "¿Qué se debe hacer en caso de contacto con los ojos con el Esmalte Epóxico Part A?",
+      "type": "factual",
+      "product": "Esmalte Epóxico Part A",
+      "expected_section": 4,
+      "reference_answer": "En caso de contacto con los ojos, se debe enjuagar inmediatamente los ojos con agua abundante . Además, si persiste la irritación de los ojos, se debe consultar a un especialista .",
+      "verified": false,
+      "draft_sources": [
+        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 4, p.3",
+        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 4, p.3",
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 4, p.3",
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 4, p.2",
+        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 4, p.3"
+      ]
+    },
+    {
+      "id": "q08",
+      "question": "¿Cuáles son los medios de extinción apropiados en caso de incendio del Esmalte Epóxico Aluminio?",
+      "type": "factual",
+      "product": "Esmalte Epóxico Aluminio",
+      "expected_section": 5,
+      "reference_answer": "No se encuentra en los documentos.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 5, p.4",
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 5, p.4",
+        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 5, p.4",
+        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 5, p.4",
+        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 5, p.4"
+      ]
+    },
+    {
+      "id": "q09",
+      "question": "¿Qué métodos y materiales de contención y limpieza se recomiendan ante un derrame del Sikafloor-2430 Part B?",
+      "type": "tecnica",
+      "product": "Sikafloor-2430 Part B",
+      "expected_section": 6,
+      "reference_answer": "Se recomiendan métodos y materiales de contención y limpieza como el uso de material absorbente que no sea combustible, por ejemplo, arena, tierra, barro de diatomeas o vermiculita.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 6, p.4",
+        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 6, p.4",
+        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 6, p.4",
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 6, p.3",
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 6, p.3"
+      ]
+    },
+    {
+      "id": "q10",
+      "question": "¿Cuáles son las condiciones de almacenamiento seguro del Esmalte Uretano AR Comp. B?",
+      "type": "tecnica",
+      "product": "Esmalte Uretano AR Comp. B",
+      "expected_section": 7,
+      "reference_answer": "No se encuentra en los documentos.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 7, p.5",
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 7, p.5",
+        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 7, p.5",
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 7, p.4",
+        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 7, p.5"
+      ]
+    },
+    {
+      "id": "q11",
+      "question": "¿Qué protección de las manos y respiratoria se requiere para manipular el Esmalte Uretano AR Comp. B?",
+      "type": "tecnica",
+      "product": "Esmalte Uretano AR Comp. B",
+      "expected_section": 8,
+      "reference_answer": "Para manipular el Esmalte Uretano AR Comp. B se requiere protección respiratoria y guantes químico-resistentes e impermeables que cumplan con estándares aprobados.",
+      "verified": false,
+      "draft_sources": [
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 8, p.6",
+        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 8, p.6",
+        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 8, p.6",
+        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 8, p.5",
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 8, p.4"
+      ]
+    },
+    {
+      "id": "q12",
+      "question": "¿Cuál es el límite de exposición profesional (TWA) del 1,6-diisocianato de hexametileno en el Esmalte Uretano AR Comp. B y en qué sección se encuentra?",
+      "type": "trazabilidad",
+      "product": "Esmalte Uretano AR Comp. B",
+      "expected_section": 8,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q13",
+      "question": "¿Cuál es el punto de inflamación y la densidad del Esmalte Epóxico Aluminio?",
+      "type": "factual",
+      "product": "Esmalte Epóxico Aluminio",
+      "expected_section": 9,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q14",
+      "question": "¿Cuál es el punto de inflamación del Sikafloor-510 Part A?",
+      "type": "factual",
+      "product": "Sikafloor-510 Part A",
+      "expected_section": 9,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q15",
+      "question": "¿Con qué materiales es incompatible el Esmalte Uretano AR Comp. B?",
+      "type": "tecnica",
+      "product": "Esmalte Uretano AR Comp. B",
+      "expected_section": 10,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q16",
+      "question": "¿Qué DL50 oral en rata se reporta para el xileno en el Esmalte Uretano AR Comp. A?",
+      "type": "tecnica",
+      "product": "Esmalte Uretano Part A",
+      "expected_section": 11,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q17",
+      "question": "¿Cómo se deben eliminar los residuos y los envases del Sikafloor-161 Part A?",
+      "type": "factual",
+      "product": "Sikafloor-161 Part A",
+      "expected_section": 13,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q18",
+      "question": "¿Cuál es el número ONU y la clase de peligro para el transporte del Sikafloor-161/264 Part B?",
+      "type": "trazabilidad",
+      "product": "Sikafloor-161/264 Part B",
+      "expected_section": 14,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q19",
+      "question": "¿Cuál es el contenido de COV (VOC % w/w) del Esmalte Alquídico Serie 31?",
+      "type": "tecnica",
+      "product": "Esmalte Alquídico Serie 31",
+      "expected_section": 15,
+      "reference_answer": "",
+      "verified": false
+    },
+    {
+      "id": "q20",
+      "question": "¿Cuál es el número ONU y la clase de transporte del Esmalte Epóxico Aluminio?",
+      "type": "trazabilidad",
+      "product": "Esmalte Epóxico Aluminio",
+      "expected_section": 14,
+      "reference_answer": "",
+      "verified": false
+    }
+  ]
+}

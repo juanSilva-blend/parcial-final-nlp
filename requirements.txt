@@ -1,0 +1,10 @@
+# Pipeline RAG local — dependencias mínimas (sin torch / langchain / chromadb).
+# Embeddings y LLM se consumen vía Ollama por HTTP usando 'requests'.
+
+pymupdf==1.27.2.3      # extracción texto + layout + bbox + imágenes (wheel abi3 → OK en 3.13)
+pdfplumber==0.11.9     # extracción de tablas (fija pdfminer.six exacto; no pinear aparte)
+pytesseract==0.3.13    # wrapper de Tesseract OCR (requiere binario del sistema)
+streamlit==1.57.0      # demo web
+numpy>=2.0             # vector store y métricas (ya presente)
+pillow>=10.0           # manejo de imágenes para OCR (ya presente)
+requests>=2.31         # cliente HTTP de Ollama (ya presente)

@@ -1,0 +1,18 @@
+# Datos generados / pesados
+data/markdown/
+data/index/
+data/raw/*.pdf
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Streamlit / sistema
+.DS_Store
+.streamlit/secrets.toml
+
+# Config local del agente (no es parte del proyecto)
+.claude/
