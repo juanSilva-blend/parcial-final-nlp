@@ -98,6 +98,68 @@ técnica 60% hit / juicio 0.34. Las secciones §3 (composición/CAS), §10 (inco
 | ¿Cuáles son los componentes y CAS del Esmalte Uretano AR Comp. B? (q06) | Acetato de butilo (CAS 123-86-4), diisocianato hexametileno (CAS 822-06-0), etc. | "No se encuentra en los documentos." | Sección 1 y 9 (error de recuperación) | **Fallo** — retrieval §3 no recuperado; juicio 0.0 |
 | ¿Número ONU y clase de transporte del Esmalte Epóxico Aluminio? (q20) | UN 3082, clase 9, grupo embalaje III. | "UN 1263, clase 3." | FDS 26 · Sección 14 · p.10 | **Alucinación numérica** — confusión con otro producto; juicio 0.5 |
 
+### 6.1 Comparación de generadores: Ollama local vs Gemini API
+
+Se evaluó el **mismo** sistema RAG (idéntica recuperación, embeddings `bge-m3` y los 22
+pares del ground truth) cambiando solo el **generador** (y su juez): `qwen2.5:3b` local
+en GPU vs `gemini-2.5-flash` por API. Reportes en `data/index/eval_report_ollama.json`
+y `eval_report_gemini.json`.
+
+| Métrica | Ollama `qwen2.5:3b` (local, GPU) | Gemini `2.5-flash` (API) |
+|---------|----------------------------------|--------------------------|
+| Hit-rate de recuperación | 0.8182 | 0.8182 |
+| **Coseno gen-vs-ref (objetivo)** | 0.7167 | **0.7764** |
+| Juicio LLM (auto-juez) | 0.5177 | 0.6545 |
+| Alucinaciones (auto-juez) | 8 | 10 |
+| **Latencia media de generación** | 20.33 s | **3.99 s** |
+
+Por tipo de pregunta (coseno · juicio):
+
+| Tipo | Ollama | Gemini |
+|------|--------|--------|
+| factual (n=8) | 0.822 · 0.69 | 0.826 · 0.84 |
+| técnica (n=10) | 0.609 · 0.37 | 0.687 · 0.47 |
+| trazabilidad (n=4) | 0.775 · 0.55 | 0.901 · 0.74 |
+
+**Nota metodológica.** El *hit-rate* es idéntico porque la recuperación no depende del
+generador → confirma que los fallos están en la recuperación (contaminación entre los 15
+productos en §3, §10, §15), no en el modelo. Cada sistema **se juzga a sí mismo**, así que
+`juicio` y `alucinaciones` NO son directamente comparables (Gemini, juez más estricto,
+marca *más* alucinaciones pese a tener mejor coseno). Las métricas comparables y objetivas
+son **coseno** (independiente del juez) y **latencia**.
+
+#### Diferencias en las respuestas (esperada vs generada)
+
+| Pregunta | Referencia | Ollama `qwen2.5:3b` | Gemini `2.5-flash` |
+|----------|------------|---------------------|--------------------|
+| q01 — fabricante y tel. emergencia (factual) | Sika Colombia S.A.S.; CISPROQUIM Bogotá 2886012… | Correcto, pero vuelca el bloque crudo (juicio 0.75, 14 s) | Correcto y redactado natural (juicio 1.0, 6.9 s) |
+| q13 — inflamación y densidad (factual) | < 23 °C (ASTM D56); 0,9–1,4 kg/l | Correcto (juicio 0.8, 28 s) | Correcto y más limpio (cos 0.96, juicio 1.0, 3.2 s) |
+| q11 — EPP manos/respiratoria (técnica) | Guantes químico-resistentes + protección respiratoria | Correcto (juicio 0.8) pero **38.7 s** | Correcto (juicio 1.0) en **3.5 s** |
+| q06 — componentes y CAS (técnica) | Acetato de butilo (123-86-4)… | "No se encuentra" ❌ | "No se encuentra" ❌ |
+| q20 — ONU/clase transporte (trazabilidad) | *(referencia errónea: UN3082/clase 9)* | Alucina "UN 000000613416" (código de producto) | "UN 1263, clase 3" — **realmente correcto** para FDS 26, pero citó otro producto |
+
+Observaciones:
+- **q06** falla igual en ambos: la Sección 3 del producto pedido no entró en el top-5
+  (contaminación entre productos) → es un fallo de **recuperación**, no de generación.
+- **q20 revela un error en el ground truth**: la referencia trae el dato del Esmalte
+  Uretano (UN3082/clase 9), pero el Epóxico Aluminio (FDS 26) es **UN1263/clase 3**.
+  Gemini acertó el dato del producto aunque la métrica lo penalizó. (Corregir esta
+  referencia mejoraría el puntaje de Gemini.)
+
+#### Conclusión
+
+- **Calidad:** Gemini supera al modelo local en la métrica objetiva (coseno +0.06) y
+  produce respuestas más limpias y naturales; su auto-juicio también es mayor. El 3B
+  comete alucinaciones numéricas más graves (inventa números ONU a partir de códigos).
+- **Precisión de recuperación:** idéntica (0.8182) — el techo lo pone la recuperación,
+  común a ambos; mejorarla (p. ej. filtro por producto) beneficia a los dos por igual.
+- **Velocidad:** Gemini ~5× más rápido (3.99 s vs 20.33 s) y sin ocupar GPU/RAM locales.
+- **Trade-off para el parcial:** la rúbrica premia la **baja dependencia y operación
+  100% local/sin APIs**. Gemini mejora calidad y latencia pero añade dependencia de una
+  API externa, clave y conectividad. El diseño deja ambos intercambiables vía
+  `config.LLM_PROVIDER`: **Ollama por defecto** (local, reproducible, sin costo) y
+  **Gemini opcional** cuando se prioriza calidad/velocidad.
+
 ## 7. Limitaciones y mitigaciones
 
 - **PDFs escaneados:** sin texto nativo se degrada a OCR de página completa; la calidad
