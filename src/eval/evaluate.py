@@ -59,17 +59,62 @@ def _judge(question: str, generated: str, reference: str) -> dict:
             "alucinacion": None, "justificacion": raw[:200]}
 
 
+def summarize(results: list[dict]) -> dict:
+    """Calcula las métricas agregadas a partir de las entradas por pregunta.
+
+    Reutilizable: permite recomputar el resumen tras parchear un resultado sin
+    volver a generar todas las respuestas (que no dependen de la referencia)."""
+    hits = tot = halluc = 0
+    cos: list[float] = []
+    jud: list[float] = []
+    lat: list[float] = []
+    agg: dict[str, dict] = defaultdict(lambda: {"n": 0, "hits": 0, "sec": 0, "cos": [], "judge": []})
+    for r in results:
+        t = r.get("type", "?")
+        agg[t]["n"] += 1
+        lat.append(r.get("gen_seconds") or 0.0)
+        exp, hit = r.get("expected_section"), r.get("retrieval_hit")
+        if exp is not None and hit is not None:
+            tot += 1
+            hits += int(hit)
+            agg[t]["sec"] += 1
+            agg[t]["hits"] += int(hit)
+        if r.get("gen_cosine") is not None:
+            cos.append(r["gen_cosine"])
+            agg[t]["cos"].append(r["gen_cosine"])
+        j = r.get("llm_judge") or {}
+        c = j.get("correcta")
+        if isinstance(c, (int, float)):
+            jud.append(float(c))
+            agg[t]["judge"].append(float(c))
+        if j.get("alucinacion") is True:
+            halluc += 1
+
+    def _mean(xs):
+        return round(float(np.mean(xs)), 4) if xs else None
+
+    by_type = {t: {"n": a["n"],
+                   "hit_rate": round(a["hits"] / a["sec"], 4) if a["sec"] else None,
+                   "mean_cosine": _mean(a["cos"]),
+                   "mean_judge": _mean(a["judge"])}
+               for t, a in agg.items()}
+    return {
+        "n_questions": len(results),
+        "retrieval_hit_rate": round(hits / tot, 4) if tot else None,
+        "mean_gen_cosine": _mean(cos),
+        "mean_llm_judge": _mean(jud),
+        "n_hallucinations": halluc,
+        "mean_gen_seconds": round(float(np.mean(lat)), 2) if lat else None,
+        "by_type": by_type,
+    }
+
+
 def run_eval(gt_path: Path = GT_PATH) -> dict:
     data = json.loads(gt_path.read_text(encoding="utf-8"))
     questions = data["preguntas"]
     pipeline = RagPipeline()
 
     results = []
-    hits = tot = halluc = 0
-    cosines: list[float] = []
-    judge_scores: list[float] = []
-    latencies: list[float] = []
-    agg: dict[str, dict] = defaultdict(lambda: {"n": 0, "hits": 0, "sec": 0, "cos": [], "judge": []})
 
     print(f"Evaluando con proveedor='{GEN_PROVIDER}' modelo='{GEN_MODEL}' …")
     for q in questions:
@@ -79,18 +124,10 @@ def run_eval(gt_path: Path = GT_PATH) -> dict:
         t0 = time.perf_counter()
         text = llm.generate(prompt, system=_SYSTEM)
         gen_dt = time.perf_counter() - t0
-        latencies.append(gen_dt)
 
         expected = q.get("expected_section")
         typ = q.get("type", "?")
-        agg[typ]["n"] += 1
-        hit = None
-        if expected is not None:
-            tot += 1
-            hit = expected in retrieved
-            hits += int(hit)
-            agg[typ]["sec"] += 1
-            agg[typ]["hits"] += int(hit)
+        hit = expected in retrieved if expected is not None else None
 
         entry = {
             "id": q["id"], "type": typ, "product": q.get("product"),
@@ -106,44 +143,16 @@ def run_eval(gt_path: Path = GT_PATH) -> dict:
         ref = (q.get("reference_answer") or "").strip()
         if ref:
             vecs = embed_texts([text, ref])
-            cos = float(np.dot(vecs[0], vecs[1]))
-            cosines.append(cos)
-            agg[typ]["cos"].append(cos)
-            entry["gen_cosine"] = round(cos, 4)
-            judged = _judge(q["question"], text, ref)
-            entry["llm_judge"] = judged
-            c = judged.get("correcta")
-            if isinstance(c, (int, float)):
-                judge_scores.append(float(c))
-                agg[typ]["judge"].append(float(c))
-            if judged.get("alucinacion") is True:
-                halluc += 1
+            entry["gen_cosine"] = round(float(np.dot(vecs[0], vecs[1])), 4)
+            entry["llm_judge"] = _judge(q["question"], text, ref)
 
         results.append(entry)
         flag = "—" if hit is None else ("✓" if hit else "✗")
         print(f"  [{q['id']}] hit={flag} cos={entry.get('gen_cosine','-')} "
               f"gen={gen_dt:.1f}s")
 
-    def _mean(xs):
-        return round(float(np.mean(xs)), 4) if xs else None
-
-    by_type = {t: {"n": a["n"],
-                   "hit_rate": round(a["hits"] / a["sec"], 4) if a["sec"] else None,
-                   "mean_cosine": _mean(a["cos"]),
-                   "mean_judge": _mean(a["judge"])}
-               for t, a in agg.items()}
-
-    summary = {
-        "gen_provider": GEN_PROVIDER,
-        "gen_model": GEN_MODEL,
-        "n_questions": len(questions),
-        "retrieval_hit_rate": round(hits / tot, 4) if tot else None,
-        "mean_gen_cosine": _mean(cosines),
-        "mean_llm_judge": _mean(judge_scores),
-        "n_hallucinations": halluc,
-        "mean_gen_seconds": round(float(np.mean(latencies)), 2) if latencies else None,
-        "by_type": by_type,
-    }
+    summary = {"gen_provider": GEN_PROVIDER, "gen_model": GEN_MODEL, **summarize(results)}
+    by_type = summary["by_type"]
     report = {"summary": summary, "results": results}
     REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 

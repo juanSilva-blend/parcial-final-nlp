@@ -108,9 +108,9 @@ y `eval_report_gemini.json`.
 | Métrica | Ollama `qwen2.5:3b` (local, GPU) | Gemini `2.5-flash` (API) |
 |---------|----------------------------------|--------------------------|
 | Hit-rate de recuperación | 0.8182 | 0.8182 |
-| **Coseno gen-vs-ref (objetivo)** | 0.7167 | **0.7764** |
-| Juicio LLM (auto-juez) | 0.5177 | 0.6545 |
-| Alucinaciones (auto-juez) | 8 | 10 |
+| **Coseno gen-vs-ref (objetivo)** | 0.717 | **0.7769** |
+| Juicio LLM (auto-juez) | 0.5177 | 0.70 |
+| Alucinaciones (auto-juez) | 8 | 9 |
 | **Latencia media de generación** | 20.33 s | **3.99 s** |
 
 Por tipo de pregunta (coseno · juicio):
@@ -119,7 +119,7 @@ Por tipo de pregunta (coseno · juicio):
 |------|--------|--------|
 | factual (n=8) | 0.822 · 0.69 | 0.826 · 0.84 |
 | técnica (n=10) | 0.609 · 0.37 | 0.687 · 0.47 |
-| trazabilidad (n=4) | 0.775 · 0.55 | 0.901 · 0.74 |
+| trazabilidad (n=4) | 0.776 · 0.55 | 0.904 · 0.99 |
 
 **Nota metodológica.** El *hit-rate* es idéntico porque la recuperación no depende del
 generador → confirma que los fallos están en la recuperación (contaminación entre los 15
@@ -136,15 +136,11 @@ son **coseno** (independiente del juez) y **latencia**.
 | q13 — inflamación y densidad (factual) | < 23 °C (ASTM D56); 0,9–1,4 kg/l | Correcto (juicio 0.8, 28 s) | Correcto y más limpio (cos 0.96, juicio 1.0, 3.2 s) |
 | q11 — EPP manos/respiratoria (técnica) | Guantes químico-resistentes + protección respiratoria | Correcto (juicio 0.8) pero **38.7 s** | Correcto (juicio 1.0) en **3.5 s** |
 | q06 — componentes y CAS (técnica) | Acetato de butilo (123-86-4)… | "No se encuentra" ❌ | "No se encuentra" ❌ |
-| q20 — ONU/clase transporte (trazabilidad) | *(referencia errónea: UN3082/clase 9)* | Alucina "UN 000000613416" (código de producto) | "UN 1263, clase 3" — **realmente correcto** para FDS 26, pero citó otro producto |
+| q20 — ONU/clase transporte (trazabilidad) | UN1263, "Pintura", clase 3, grupo III | Alucina "UN 000000613416" (código de producto); clase 3 ✓ pero ONU inventado (juicio 0.2) | "UN1263, clase 3" — **correcto** (juicio 1.0) |
 
 Observaciones:
 - **q06** falla igual en ambos: la Sección 3 del producto pedido no entró en el top-5
   (contaminación entre productos) → es un fallo de **recuperación**, no de generación.
-- **q20 revela un error en el ground truth**: la referencia trae el dato del Esmalte
-  Uretano (UN3082/clase 9), pero el Epóxico Aluminio (FDS 26) es **UN1263/clase 3**.
-  Gemini acertó el dato del producto aunque la métrica lo penalizó. (Corregir esta
-  referencia mejoraría el puntaje de Gemini.)
 
 #### Conclusión
 

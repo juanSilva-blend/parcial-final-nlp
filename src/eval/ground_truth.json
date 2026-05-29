@@ -235,7 +235,7 @@
       "type": "trazabilidad",
       "product": "Esmalte Epóxico Aluminio",
       "expected_section": 14,
-      "reference_answer": "El Esmalte Epóxico Aluminio tiene número ONU UN 3082, designación oficial ENVIRONMENTALLY HAZARDOUS SUBSTANCE, LIQUID, N.O.S., clase de peligro 9 y grupo de embalaje III.",
+      "reference_answer": "El Esmalte Epóxico Aluminio tiene número ONU UN1263, designación oficial de transporte 'Pintura', clase de peligro 3 y grupo de embalaje III. No es peligroso para el medio ambiente.",
       "verified": true,
       "draft_sources": [
         "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 14, p.7"
