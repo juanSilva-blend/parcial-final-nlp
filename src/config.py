@@ -24,6 +24,11 @@ VALIDATION_REPORT = INDEX_DIR / "validation_report.json"
 for _d in (RAW_DIR, MD_DIR, ASSETS_DIR, INDEX_DIR):
     _d.mkdir(parents=True, exist_ok=True)
 
+# --- Proveedor LLM ----------------------------------------------------------
+# "ollama"  → LLM local via Ollama HTTP (sin coste, requiere GPU/CPU local)
+# "gemini"  → Google Gemini API (requiere GEMINI_API_KEY)
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "ollama")
+
 # --- Ollama -----------------------------------------------------------------
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 
@@ -44,6 +49,11 @@ OLLAMA_KEEP_ALIVE = os.environ.get("OLLAMA_KEEP_ALIVE", "5m")
 # (keep_alive=0) para liberar la GPU/RAM antes de cargar el LLM (evita coexistencia).
 OLLAMA_UNLOAD = "0"
 REQUEST_TIMEOUT = 600  # segundos; los modelos pequeños en CPU pueden ser lentos
+
+# --- Gemini API -------------------------------------------------------------
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+# gemini-2.0-flash: rápido y económico. gemini-1.5-pro: más preciso, más caro.
+GEMINI_LLM_MODEL = os.environ.get("GEMINI_LLM_MODEL", "gemini-2.0-flash")
 
 # --- Chunking ---------------------------------------------------------------
 CHUNK_SIZE = 1000      # caracteres objetivo por sub-chunk
