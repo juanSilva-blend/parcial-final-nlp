@@ -8,6 +8,8 @@ Generación determinista (temperature=0) para reproducibilidad y evaluación.
 """
 from __future__ import annotations
 
+import time
+
 import requests
 
 from . import config
@@ -63,19 +65,25 @@ def _generate_gemini(prompt: str, system: str | None, model: str,
             "[llm/gemini] Paquete no instalado. Ejecuta:  pip install google-genai")
 
     client = genai.Client(api_key=config.GEMINI_API_KEY)
-    try:
-        response = client.models.generate_content(
-            model=model,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                system_instruction=system or "",
-                temperature=temperature,
-            ),
-        )
-    except Exception as exc:
-        raise SystemExit(f"[llm/gemini] Error en la llamada a la API: {exc}")
+    cfg = types.GenerateContentConfig(
+        system_instruction=system or "", temperature=temperature)
 
-    return response.text.strip()
+    # Reintenta errores transitorios (503 sobrecarga / 429 cuota) con backoff.
+    _TRANSIENT = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED", "overloaded")
+    last_exc: Exception | None = None
+    for attempt in range(5):
+        try:
+            response = client.models.generate_content(
+                model=model, contents=prompt, config=cfg)
+            return response.text.strip()
+        except Exception as exc:
+            last_exc = exc
+            if any(k in str(exc) for k in _TRANSIENT):
+                time.sleep(2 ** attempt)   # 1, 2, 4, 8, 16 s
+                continue
+            raise SystemExit(f"[llm/gemini] Error en la llamada a la API: {exc}")
+    raise SystemExit(
+        f"[llm/gemini] La API sigue no disponible tras varios reintentos: {last_exc}")
 
 
 # ---------------------------------------------------------------------------
@@ -83,10 +91,11 @@ def _generate_gemini(prompt: str, system: str | None, model: str,
 # ---------------------------------------------------------------------------
 
 def generate(prompt: str, system: str | None = None, model: str | None = None,
-             temperature: float | None = None) -> str:
-    """Genera una respuesta. El proveedor se elige con config.LLM_PROVIDER."""
+             temperature: float | None = None, provider: str | None = None) -> str:
+    """Genera una respuesta. El proveedor se elige con config.LLM_PROVIDER salvo que
+    se pase 'provider' explícito (útil para fijar un juez distinto del generador)."""
     temperature = config.LLM_TEMPERATURE if temperature is None else temperature
-    provider = config.LLM_PROVIDER.lower()
+    provider = (provider or config.LLM_PROVIDER).lower()
 
     if provider == "gemini":
         model = model or config.GEMINI_LLM_MODEL
