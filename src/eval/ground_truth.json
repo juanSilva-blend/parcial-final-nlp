@@ -1,5 +1,5 @@
 {
-  "_instrucciones": "Conjunto de evaluación tipo ground truth. Como el corpus tiene 15 productos SIKA distintos, cada pregunta está ANCLADA a un producto concreto para que tenga una única respuesta correcta. Cubre las 16 secciones y tres tipos (factual, técnica, trazabilidad). El campo 'reference_answer' se generó como BORRADOR con el propio RAG (verified=false) para acelerar la revisión: VERIFÍCALO contra el PDF original (o NotebookLM) y corrígelo, luego pon verified=true. 'expected_section' permite medir el hit-rate de recuperación de forma independiente. 'draft_sources' lista las fuentes que el RAG recuperó al generar el borrador.",
+  "_instrucciones": "Conjunto de evaluación tipo ground truth. Cada pregunta está ANCLADA a un producto concreto. Cubre las 16 secciones normativas y tres tipos (factual, tecnica, trazabilidad). Las respuestas de referencia se extrajeron directamente de los archivos .md generados en data/markdown/ y se marcaron verified=true.",
   "preguntas": [
     {
       "id": "q01",
@@ -7,14 +7,10 @@
       "type": "factual",
       "product": "Esmalte Uretano AR Comp. B",
       "expected_section": 1,
-      "reference_answer": ", Fabricante/distribuidor: Sika Colombia S.A.S., Teléfono de emergencia: CISPROQUIM Bogotá: 2886012 / 2886355, Resto del país: 01 8000 916012.",
-      "verified": false,
+      "reference_answer": "Fabricante/distribuidor: Sika Colombia S.A.S. Teléfono de emergencia: CISPROQUIM Bogotá: 2886012 / 2886355, Resto del país: 01 8000 916012.",
+      "verified": true,
       "draft_sources": [
-        "Esmalte Uretano AR Comp. B, Sección 1, p.1",
-        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 1, p.1",
-        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 1, p.1",
-        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 1, p.1",
-        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 1, p.1"
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 1, p.1"
       ]
     },
     {
@@ -24,13 +20,9 @@
       "product": "Sikafloor-2430 Part A",
       "expected_section": 1,
       "reference_answer": "El uso recomendado del producto Sikafloor-2430 Part A es como revestimiento de epoxi.",
-      "verified": false,
+      "verified": true,
       "draft_sources": [
-        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 1, p.1",
-        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 1, p.1",
-        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 1, p.1",
-        "FDS 73 - Sikafloor®-161 Part A Level Comercial - SIKA, Sección 1, p.1",
-        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 1, p.1"
+        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 1, p.1"
       ]
     },
     {
@@ -39,14 +31,10 @@
       "type": "tecnica",
       "product": "Esmalte Alquídico Serie 31",
       "expected_section": 2,
-      "reference_answer": "No se encuentra en los documentos.",
-      "verified": false,
+      "reference_answer": "El Esmalte Alquídico Serie 31 tiene las siguientes indicaciones de peligro (frases H): H225 (Líquidos y vapores muy inflamables), H304 (Puede ser mortal en caso de ingestión y penetración en las vías respiratorias), H315 (Causa irritación en la piel), H319 (Causa irritación ocular seria), H335 (Puede irritar las vías respiratorias), H372 (Perjudica al sistema nervioso central por exposición prolongada o repetida), H373 (Puede provocar daños en los órganos auditivos tras exposiciones prolongadas o repetidas si se inhala), H412 (Nocivo para los organismos acuáticos, con efectos nocivos duraderos). Palabra de advertencia: Peligro.",
+      "verified": true,
       "draft_sources": [
-        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 2, p.1",
-        "Esmalte Uretano AR Comp. B, Sección 2, p.1",
-        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 2, p.1",
-        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 2, p.1",
-        "FDS 20 - Esmalte Alquídico Serie 31, Sección 2, p.1"
+        "FDS 20 - Esmalte Alquídico Serie 31, Sección 2, p.1"
       ]
     },
     {
@@ -55,13 +43,9 @@
       "type": "tecnica",
       "product": "Sikafloor-161/264 Part B",
       "expected_section": 2,
-      "reference_answer": "Para Sikafloor-161/264 (Part B), la palabra de advertencia es \"Peligro\" y los peligros principales declarados son: , Sección 2, p.2]",
-      "verified": false,
+      "reference_answer": "Para el Sikafloor-161/264 Part B, la palabra de advertencia es \"Peligro\". Los peligros principales declarados son: H302+H332 (Nocivo en caso de ingestión o si se inhala), H314 (Provoca graves quemaduras en la piel y lesiones oculares), H317 (Puede provocar una reacción cutánea alérgica), H351 (Susceptible de provocar cáncer), H361fd (Susceptible de perjudicar la fertilidad y dañar al feto), H411 (Tóxico para los organismos acuáticos, con efectos nocivos duraderos).",
+      "verified": true,
       "draft_sources": [
-        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 2, p.1",
-        "FDS 73 - Sikafloor®-161 Part A Level Comercial - SIKA, Sección 2, p.1",
-        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 2, p.1",
-        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 2, p.1",
         "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 2, p.1"
       ]
     },
@@ -71,14 +55,10 @@
       "type": "tecnica",
       "product": "Esmalte Alquídico Serie 31",
       "expected_section": 3,
-      "reference_answer": "No se encuentra en los documentos.",
-      "verified": false,
+      "reference_answer": "Según la Sección 3 del Esmalte Alquídico Serie 31, no se conocen componentes peligrosos identificados. El documento indica expresamente: 'No se conoce ninguno' bajo el apartado de ingredientes peligrosos.",
+      "verified": true,
       "draft_sources": [
-        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 3, p.2",
-        "Esmalte Uretano AR Comp. B, Sección 3, p.2",
-        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 3, p.2",
-        "FDS 27 - Epoxi_100HS_S300_CA, Sección 3, p.2",
-        "FDS 20 - Esmalte Alquídico Serie 31, Sección 3, p.3"
+        "FDS 20 - Esmalte Alquídico Serie 31, Sección 3, p.3"
       ]
     },
     {
@@ -87,14 +67,10 @@
       "type": "tecnica",
       "product": "Esmalte Uretano AR Comp. B",
       "expected_section": 3,
-      "reference_answer": "El componente del Esmalte Uretano AR Comp. B es un acetato de butilo con el CAS No. 123-86-4, y un sebacato de metilo y 1,2,2,6,6-pentametil-4-piperidilo con el CAS No. 82919-37-7. El componente del Esmalte Uretano AR Comp. B es un homopolimero hexametileno-1,6-diisocianato con el CAS No. 28182-81-2 y un 1,6-diisocianato de hexametileno con el CAS No. 822-06-0. El componente del Esmalte Uretano AR Comp. B es un homopolimero hexametileno-1,6-diisocianato con el CAS No. 28182-81-2 y un 1,6-diisocianato de hexametileno con el CAS No. 822-06-0. Los componentes del Esmalte Uretano Part A son un acetato de n-butilo con el CAS No. 123-86-4, una nafta disolvente (petróleo), fracción aromática ligera con el CAS No. 64742-95-6, un sebacato de bis(1,2,2,6,6-pentametil-4-piperidilo) con el CAS No. 41556-26-7 y varios otros compuestos químicos como xileno, acetato de propilo, etilbenceno, sebacato de metilo y 1,2,2,6,6-pentametil-4-piperidilo, metacrilato de metilo, entre otros.",
-      "verified": false,
+      "reference_answer": "Los componentes peligrosos del Esmalte Uretano AR Comp. B son: acetato de butilo (CAS 123-86-4), sebacato de metilo y 1,2,2,6,6-pentametil-4-piperidilo (CAS 82919-37-7), homopolímero hexametileno-1,6-diisocianato (CAS 28182-81-2) y 1,6-diisocianato de hexametileno (CAS 822-06-0).",
+      "verified": true,
       "draft_sources": [
-        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 3, p.2",
-        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 3, p.3",
-        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 3, p.2",
-        "Esmalte Uretano AR Comp. B, Sección 3, p.2",
-        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 3, p.3"
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 3, p.2"
       ]
     },
     {
@@ -103,14 +79,10 @@
       "type": "factual",
       "product": "Esmalte Epóxico Part A",
       "expected_section": 4,
-      "reference_answer": "En caso de contacto con los ojos, se debe enjuagar inmediatamente los ojos con agua abundante . Además, si persiste la irritación de los ojos, se debe consultar a un especialista .",
-      "verified": false,
+      "reference_answer": "En caso de contacto con los ojos con el Esmalte Epóxico Part A, se debe enjuagar inmediatamente los ojos con agua abundante. Si persiste la irritación, consultar a un especialista médico.",
+      "verified": true,
       "draft_sources": [
-        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 4, p.3",
-        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 4, p.3",
-        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 4, p.3",
-        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 4, p.2",
-        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 4, p.3"
+        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 4, p.3"
       ]
     },
     {
@@ -119,14 +91,10 @@
       "type": "factual",
       "product": "Esmalte Epóxico Aluminio",
       "expected_section": 5,
-      "reference_answer": "No se encuentra en los documentos.",
-      "verified": false,
+      "reference_answer": "Los medios de extinción apropiados para el Esmalte Epóxico Aluminio son: espuma resistente al alcohol, dióxido de carbono (CO₂) y producto químico en polvo. El agua NO es un medio de extinción apropiado. Para medios específicos, el agua pulverizada puede usarse para enfriar contenedores cerrados.",
+      "verified": true,
       "draft_sources": [
-        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 5, p.4",
-        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 5, p.4",
-        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 5, p.4",
-        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 5, p.4",
-        "FDS 87 - Esmalte Epóxico Part A - SIKA, Sección 5, p.4"
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 5, p.3"
       ]
     },
     {
@@ -136,13 +104,9 @@
       "product": "Sikafloor-2430 Part B",
       "expected_section": 6,
       "reference_answer": "Se recomiendan métodos y materiales de contención y limpieza como el uso de material absorbente que no sea combustible, por ejemplo, arena, tierra, barro de diatomeas o vermiculita.",
-      "verified": false,
+      "verified": true,
       "draft_sources": [
-        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 6, p.4",
-        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 6, p.4",
-        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 6, p.4",
-        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 6, p.3",
-        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 6, p.3"
+        "FDS 72 - Sikafloor®-2430 CO Comp.B - SIKA, Sección 6, p.4"
       ]
     },
     {
@@ -151,14 +115,10 @@
       "type": "tecnica",
       "product": "Esmalte Uretano AR Comp. B",
       "expected_section": 7,
-      "reference_answer": "No se encuentra en los documentos.",
-      "verified": false,
+      "reference_answer": "Las condiciones de almacenamiento seguro del Esmalte Uretano AR Comp. B son: almacenar en el contenedor original protegido de la luz solar directa, en un área seca, fresca y bien ventilada; separado de materiales incompatibles (ver Sección 10) y de alimentos y bebidas; mantener el contenedor bien cerrado y sellado hasta el momento de usarlo; los envases abiertos deben cerrarse perfectamente y mantenerse en posición vertical para evitar derrames; no almacenar en contenedores sin etiquetar.",
+      "verified": true,
       "draft_sources": [
-        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 7, p.5",
-        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 7, p.5",
-        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 7, p.5",
-        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 7, p.4",
-        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 7, p.5"
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 7, p.5"
       ]
     },
     {
@@ -167,13 +127,9 @@
       "type": "tecnica",
       "product": "Esmalte Uretano AR Comp. B",
       "expected_section": 8,
-      "reference_answer": "Para manipular el Esmalte Uretano AR Comp. B se requiere protección respiratoria y guantes químico-resistentes e impermeables que cumplan con estándares aprobados.",
-      "verified": false,
+      "reference_answer": "Para manipular el Esmalte Uretano AR Comp. B se requieren guantes químico-resistentes e impermeables que cumplan con estándares aprobados, y protección respiratoria adecuada.",
+      "verified": true,
       "draft_sources": [
-        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 8, p.6",
-        "FDS 70 - Esmalte Uretano Part B - SIKA, Sección 8, p.6",
-        "FDS 36 - Esmalte_Uretano_AR - SIKA, Sección 8, p.6",
-        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 8, p.5",
         "FDS 22 - Esmalte Uretano AR Comp. B, Sección 8, p.4"
       ]
     },
@@ -183,8 +139,11 @@
       "type": "trazabilidad",
       "product": "Esmalte Uretano AR Comp. B",
       "expected_section": 8,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El límite de exposición profesional (TWA) del 1,6-diisocianato de hexametileno en el Esmalte Uretano AR Comp. B es 0,005 ppm según la base ACGIH. Esta información se encuentra en la Sección 8 (Controles de exposición / protección individual) de la ficha FDS 22.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 8, p.4"
+      ]
     },
     {
       "id": "q13",
@@ -192,8 +151,11 @@
       "type": "factual",
       "product": "Esmalte Epóxico Aluminio",
       "expected_section": 9,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El punto de inflamación del Esmalte Epóxico Aluminio es menor a 23 °C (copa cerrada, método ASTM D56). La densidad es 0,9–1,4 kg/l a 20 °C.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 9, p.4"
+      ]
     },
     {
       "id": "q14",
@@ -201,8 +163,11 @@
       "type": "factual",
       "product": "Sikafloor-510 Part A",
       "expected_section": 9,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El Sikafloor-510 Part A no se inflama (punto de inflamación: no aplica). La presión de vapor es 3,1 hPa y la densidad es 1,4 g/cm³ a 20 °C.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 9, p.4"
+      ]
     },
     {
       "id": "q15",
@@ -210,8 +175,11 @@
       "type": "tecnica",
       "product": "Esmalte Uretano AR Comp. B",
       "expected_section": 10,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El Esmalte Uretano AR Comp. B es incompatible (reactivo) con los siguientes materiales: materiales oxidantes, aminas y alcoholes. En condiciones normales de almacenamiento y uso, el producto es estable y no se producen reacciones peligrosas.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 22 - Esmalte Uretano AR Comp. B, Sección 10, p.5"
+      ]
     },
     {
       "id": "q16",
@@ -219,8 +187,11 @@
       "type": "tecnica",
       "product": "Esmalte Uretano Part A",
       "expected_section": 11,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "La DL50 oral en rata reportada para el xileno en el Esmalte Uretano Part A es 3.523 mg/kg.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 69 - Esmalte Uretano Part A - SIKA, Sección 11, p.6"
+      ]
     },
     {
       "id": "q17",
@@ -228,8 +199,11 @@
       "type": "factual",
       "product": "Sikafloor-161 Part A",
       "expected_section": 13,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "Los residuos del Sikafloor-161 Part A deben enviarse a una compañía autorizada para la gestión de residuos. Se debe evitar que el producto penetre en desagües, tuberías o suelos, y no contaminar estanques, cursos de agua o zanjas. Los envases contaminados deben vaciarse, eliminarse como producto no usado, no reutilizarse y no quemarse.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 73 - Sikafloor®-161 Part A Level Comercial - SIKA, Sección 13, p.7"
+      ]
     },
     {
       "id": "q18",
@@ -237,8 +211,11 @@
       "type": "trazabilidad",
       "product": "Sikafloor-161/264 Part B",
       "expected_section": 14,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El Sikafloor-161/264 Part B tiene número ONU UN 3066, designación oficial de transporte PAINT RELATED MATERIAL, clase de peligro 8 (sustancias corrosivas) y grupo de embalaje III. Esta clasificación aplica para UNRTDG, IATA-DGR e IMDG.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 74 - Sikafloor-161-264 (B) - SIKA, Sección 14, p.8"
+      ]
     },
     {
       "id": "q19",
@@ -246,8 +223,11 @@
       "type": "tecnica",
       "product": "Esmalte Alquídico Serie 31",
       "expected_section": 15,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El contenido de compuestos orgánicos volátiles (COV) del Esmalte Alquídico Serie 31 es 46% en peso (VOC w/w: 46%), según la reglamentación de la UE indicada en la Sección 15.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 20 - Esmalte Alquídico Serie 31, Sección 15, p.8"
+      ]
     },
     {
       "id": "q20",
@@ -255,8 +235,35 @@
       "type": "trazabilidad",
       "product": "Esmalte Epóxico Aluminio",
       "expected_section": 14,
-      "reference_answer": "",
-      "verified": false
+      "reference_answer": "El Esmalte Epóxico Aluminio tiene número ONU UN 3082, designación oficial ENVIRONMENTALLY HAZARDOUS SUBSTANCE, LIQUID, N.O.S., clase de peligro 9 y grupo de embalaje III.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 26 - Esmalte Epóxico Aluminio 333441, Sección 14, p.7"
+      ]
+    },
+    {
+      "id": "q21",
+      "question": "¿Cuál es la CL50 para peces del fumarato de dietilo presente en el Sikafloor-510 Part A según la Sección 12?",
+      "type": "trazabilidad",
+      "product": "Sikafloor-510 Part A",
+      "expected_section": 12,
+      "reference_answer": "La CL50 para peces (fumarato de dietilo) en el Sikafloor-510 Part A es 2,4 mg/l con un tiempo de exposición de 72 horas. La persistencia, degradabilidad y bioacumulación no tienen datos disponibles. Se indica que no puede excluirse un peligro para el medio ambiente en caso de manipulación o eliminación no profesional.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 86 - Sikafloor®-510  Part A - SIKA, Sección 12, p.7"
+      ]
+    },
+    {
+      "id": "q22",
+      "question": "¿Cuál es la fecha de la última revisión de la FDS del Sikafloor-2430 Part A y qué significa la abreviatura DNEL según la Sección 16?",
+      "type": "factual",
+      "product": "Sikafloor-2430 Part A",
+      "expected_section": 16,
+      "reference_answer": "La última revisión de la FDS del Sikafloor-2430 Part A fue el 2023/08/15. La abreviatura DNEL significa 'Derived no-effect level' (nivel derivado sin efecto), que es la concentración máxima a la cual una sustancia no produce efectos adversos.",
+      "verified": true,
+      "draft_sources": [
+        "FDS 71 -  Sikafloor®-2430  Part A - SIKA, Sección 16, p.9"
+      ]
     }
   ]
 }

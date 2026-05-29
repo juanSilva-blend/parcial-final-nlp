@@ -71,20 +71,32 @@ Corpus: **15 FDS de SIKA** (data/raw/). Detalle por documento (de
   "Nota de trazabilidad". Las imágenes que aparecen antes de la Sección 1 (logo Sika del
   encabezado) se marcan correctamente como "no asociada con certeza".
 
-## 6. Resultados del RAG *(completar)*
+## 6. Resultados del RAG
 
-> Tomar de `data/index/eval_report.json` tras completar `reference_answer` en
-> `ground_truth.json` (se recomienda NotebookLM para generar las referencias).
+Evaluación ejecutada sobre 22 pares pregunta-respuesta verificados que cubren las 16
+secciones normativas. Modelo generativo: `qwen2.5:3b-instruct` (Q4, CPU). Embeddings:
+`bge-m3` (1024-dim). Resultados de `data/index/eval_report.json`.
 
-- **retrieval_hit_rate:** _…_
-- **mean_gen_cosine:** _…_
-- **mean_llm_judge:** _…_
+| Métrica | Valor |
+|---------|-------|
+| **retrieval_hit_rate** | **0.8182** (18/22) |
+| **mean_gen_cosine** | **0.7404** |
+| **mean_llm_judge** | **0.5614** |
+| Alucinaciones detectadas | 6/22 (27%) |
 
-### Ejemplos comparativos esperado vs. generado *(completar)*
+Por tipo de pregunta: factual 100% hit / juicio 0.73 · trazabilidad 100% hit / juicio 0.79 ·
+técnica 60% hit / juicio 0.34. Las secciones §3 (composición/CAS), §10 (incompatibilidades) y
+§15 (COV/reglamentario) presentan fallos de recuperación por vocabulario técnico especializado.
 
-| Pregunta | Respuesta esperada | Respuesta del RAG | Fuente citada | Observación |
-|----------|--------------------|-------------------|---------------|-------------|
-| _…_ | _…_ | _…_ | _Sección N, p.X_ | _correcta / parcial / alucinación_ |
+### Ejemplos comparativos esperado vs. generado
+
+| Pregunta | Respuesta esperada (referencia) | Respuesta del RAG | Fuente citada | Observación |
+|----------|---------------------------------|-------------------|---------------|-------------|
+| ¿Qué métodos de contención ante derrame del Sikafloor-2430 Part B? (q09) | Material absorbente no combustible: arena, tierra, diatomeas o vermiculita. | Material absorbente no combustible: arena, tierra, barro de diatomeas, vermiculita. | FDS 72 · Sección 6 · p.4 | **Correcta** — juicio 1.0, coseno 0.86 |
+| ¿CL50 para peces del fumarato de dietilo en Sikafloor-510 Part A? (q21) | 2,4 mg/l, exposición 72 h. Sin datos de persistencia/bioacumulación. | La CL50 (Pez) es 2,4 mg/l. | FDS 86 · Sección 12 · p.7 | **Correcta** — juicio 1.0, coseno 0.83 |
+| ¿Cómo eliminar residuos del Sikafloor-161 Part A? (q17) | Empresa autorizada; no contaminar desagües/suelos; vaciar envases; no reutilizar. | Empresa autorizada; no contaminar estanques/cursos; vaciar envases; no quemar. | FDS 73 · Sección 13 · p.8 | **Parcial** — juicio 0.9, omite desagües |
+| ¿Cuáles son los componentes y CAS del Esmalte Uretano AR Comp. B? (q06) | Acetato de butilo (CAS 123-86-4), diisocianato hexametileno (CAS 822-06-0), etc. | "No se encuentra en los documentos." | Sección 1 y 9 (error de recuperación) | **Fallo** — retrieval §3 no recuperado; juicio 0.0 |
+| ¿Número ONU y clase de transporte del Esmalte Epóxico Aluminio? (q20) | UN 3082, clase 9, grupo embalaje III. | "UN 1263, clase 3." | FDS 26 · Sección 14 · p.10 | **Alucinación numérica** — confusión con otro producto; juicio 0.5 |
 
 ## 7. Limitaciones y mitigaciones
 
