@@ -45,5 +45,32 @@ echo "==> NOTA para GPUs Turing (GTX 16xx): arranca el servidor de Ollama con"
 echo "    OLLAMA_FLASH_ATTENTION=0 o bge-m3 devolverá embeddings NaN, p. ej.:"
 echo "    OLLAMA_FLASH_ATTENTION=0 OLLAMA_MAX_LOADED_MODELS=1 ollama serve &"
 echo ""
+
+# ============================================================================
+# (OPCIONAL) Generación con Gemini en lugar del modelo local
+# ----------------------------------------------------------------------------
+# El proveedor del LLM se elige con la variable LLM_PROVIDER (por defecto: ollama).
+# El paquete 'google-genai' ya quedó instalado vía requirements.txt. Los embeddings
+# SIEMPRE son locales (bge-m3 por Ollama), así que el servidor de Ollama debe estar
+# corriendo también con Gemini.
+#
+# Para usar Gemini, exporta estas variables antes de build_index / query / eval:
+#     export LLM_PROVIDER=gemini
+#     export GEMINI_API_KEY=<tu_clave>
+#     export GEMINI_LLM_MODEL=gemini-2.5-flash   # 'gemini-2.0-flash' quedó deprecado
+# Ejemplo:
+#     LLM_PROVIDER=gemini GEMINI_API_KEY=<clave> GEMINI_LLM_MODEL=gemini-2.5-flash \
+#       .venv/bin/python query_cli.py "¿Qué EPP requiere el Esmalte Uretano AR Comp. B?"
+# Para volver al modelo local:  export LLM_PROVIDER=ollama
+#
+# ⚠️  SEGURIDAD: este repositorio es PÚBLICO. NO dejes claves reales versionadas aquí;
+#     si se commitean quedan expuestas (Google puede desactivarlas y otros gastan tu
+#     cuota). Lo ideal es exportar GEMINI_API_KEY en tu shell o en un archivo .env
+#     ignorado por git, y rotar la clave al terminar.
+#     Clave usada en las pruebas (gemini-2.5-flash), funcional al 2026-05-29:
+#       GEMINI_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# ============================================================================
+echo "==> (opcional) Gemini: export LLM_PROVIDER=gemini GEMINI_API_KEY=<clave> GEMINI_LLM_MODEL=gemini-2.5-flash"
+echo ""
 echo "==> Listo. Coloca los PDFs de SIKA en data/raw/ y ejecuta:"
 echo "      .venv/bin/python build_index.py"

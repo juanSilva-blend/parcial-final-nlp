@@ -16,3 +16,4 @@ venv/
 
 # Config local del agente (no es parte del proyecto)
 .claude/
+.env
